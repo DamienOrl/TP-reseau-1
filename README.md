@@ -58,7 +58,8 @@ Heu, finalement, non...
 
 <img src="https://media.giphy.com/media/jUwpNzg9IcyrK/source.gif" width="300" height="200" />
 
-Au moins, [X] NAT OK!
+- [x]Au moins, NAT OK!
+
 ```
 [dams@client1 ~]$ ping -c 4 10.1.1.1
 PING 10.1.1.1 (10.1.1.1) 56(84) bytes of data.
@@ -71,7 +72,8 @@ PING 10.1.1.1 (10.1.1.1) 56(84) bytes of data.
 4 packets transmitted, 4 received, 0% packet loss, time 3002ms
 rtt min/avg/max/mdev = 0.392/0.445/0.502/0.044 ms
 ```
-[X] `net1` OK!
+- [x] `net1` OK!
+
 ```
 [dams@client1 ~]$ ping -c 4 10.1.2.1
 PING 10.1.2.1 (10.1.2.1) 56(84) bytes of data.
@@ -84,7 +86,7 @@ PING 10.1.2.1 (10.1.2.1) 56(84) bytes of data.
 4 packets transmitted, 4 received, 0% packet loss, time 3002ms
 rtt min/avg/max/mdev = 0.298/0.876/2.489/0.932 ms
 ```
-[X] `net2` OK!
+- [x] `net2` OK!
 
 ___Tout est bon, on peut commencer!___
 
