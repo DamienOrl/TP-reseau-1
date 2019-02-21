@@ -1,5 +1,6 @@
 # I. Exploration du réseau d'une machine CentOS
 `net1` est en /24 et possède donc **254** adresses disponibles.
+
 `net2` est en /30 et possède donc **2** adresses disponibles : utile pour restreindre le réseau et le sécuriser.
 
 ## Paramétrage:
@@ -32,9 +33,60 @@ ONBOOT=yes
 
 ### Définir le nom de domaine:
 `sudo hostname client1.tp1.b2` (à chaud, jusqu'au prochain redémarrage)
+
 `sudo vi /etc/hostname`: `client1.tp1.b2` (à froid, de manière permanente)
 
-301 car cURL renvoie le contenu HTML et le contenu a été déplacé vers une autre adresse.
+Testons tout ça:
+```
+[dams@client1 ~]$ curl google.com
+<HTML><HEAD><meta http-equiv="content-type" content="text/html;charset=utf-8">
+<TITLE>301 Moved</TITLE></HEAD><BODY>
+<H1>301 Moved</H1>
+The document has moved
+<A HREF="http://www.google.com/">here</A>.
+</BODY></HTML>
+```
+
+On obtient un code 301 car cURL renvoie le contenu HTML et le contenu a été déplacé vers une autre adresse.
+
+Maintenant, suivons cette redirection avec `curl -L google.com`:
+
+```
+<!doctype html><html itemscope="" itemtype="http://schema.org/WebPage" lang="fr"><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"><meta content="/images/branding/googleg/1x/googleg_standard_color_128dp.png" itemprop="image"><title>Google</title><script nonce="5Tu+ngDOPP5SzV/duYYDDw==">(function(){window.google={kEI:'1rhuXIn6EsWsaaqqnsAE',kEXPI:'0,201940,1151806,58,1958,1632,790,698,527,731,325,1406,67,30,1227,806,955,122,107,20,317,95,18,39,26,144,2334413,329558,1294,12383,4855,32692,15247,867,12429,5015,11240,369,3314,1263,4242,2442,260,1028,2635,1444,575,835,284,2,579,727,2432,1361,4324,3389,8,296,664,575,34,774,2253,4741,1151,2,983,766,216,2595,182,839,2580,669,1050,1808,1129,268,81,7,491,620,29,992,387,16,4305,3395,1209,318,558,412,2,554,2635,818,796,11,1209,38,363,259,20,278,528,190,155,1217,1364,484,47,1080,542,2150,44,1558,1245,258,2,631,218,2185,159,2,4,2,670,44,168,767,20,1232,598,97,1266,510,124,1161,431,999,17,99,533,464,950,44,306,25,330,72,536,2,27,19,109,20,39,255,23,255,2,414,72,1282,1140,206,539,21,587,824,1052,58,87,207,549,65,33,2,390,30,399,39,334,2,455,58,104 ...
+```
+Heu, finalement, non...
+
+<img src="https://media.giphy.com/media/jUwpNzg9IcyrK/source.gif" width="300" height="200" />
+
+Au moins, [X] NAT OK!
+```
+[dams@client1 ~]$ ping -c 4 10.1.1.1
+PING 10.1.1.1 (10.1.1.1) 56(84) bytes of data.
+64 bytes from 10.1.1.1: icmp_seq=1 ttl=128 time=0.502 ms
+64 bytes from 10.1.1.1: icmp_seq=2 ttl=128 time=0.392 ms
+64 bytes from 10.1.1.1: icmp_seq=3 ttl=128 time=0.420 ms
+64 bytes from 10.1.1.1: icmp_seq=4 ttl=128 time=0.467 ms
+
+--- 10.1.1.1 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3002ms
+rtt min/avg/max/mdev = 0.392/0.445/0.502/0.044 ms
+```
+[X] `net1` OK!
+```
+[dams@client1 ~]$ ping -c 4 10.1.2.1
+PING 10.1.2.1 (10.1.2.1) 56(84) bytes of data.
+64 bytes from 10.1.2.1: icmp_seq=1 ttl=128 time=2.48 ms
+64 bytes from 10.1.2.1: icmp_seq=2 ttl=128 time=0.298 ms
+64 bytes from 10.1.2.1: icmp_seq=3 ttl=128 time=0.314 ms
+64 bytes from 10.1.2.1: icmp_seq=4 ttl=128 time=0.404 ms
+
+--- 10.1.2.1 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3002ms
+rtt min/avg/max/mdev = 0.298/0.876/2.489/0.932 ms
+```
+[X] `net2` OK!
+
+___Tout est bon, on peut commencer!___
 
 ## Opérations de base
 
