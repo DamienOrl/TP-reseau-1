@@ -58,7 +58,7 @@ Heu, finalement, non...
 
 <img src="https://media.giphy.com/media/jUwpNzg9IcyrK/source.gif" width="300" height="200" />
 
-- [x]Au moins, NAT OK!
+- [x] Au moins, NAT OK!
 
 ```
 [dams@client1 ~]$ ping -c 4 10.1.1.1
